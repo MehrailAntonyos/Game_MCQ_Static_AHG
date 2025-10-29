@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>التغذية الراجعة - GameMCQ</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header class="header">
+  <div class="container header-main">
+    <div class="header-content">
+      <div class="logo"><img src="../assets/LogoBgRemove.png" alt="logo" style="height:48px;margin-right:8px;"><div class="logo-text">GameMCQ</div></div>
+      <nav class="nav">
+        <a class="nav-link" href="select-team_1.html">ابدأ</a>
+        <a class="nav-link" href="leaderboard.html">النتائج</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main class="container section" style="text-align:center;">
+<section class="section-header">
+<h1 class="section-title">نتيجتك</h1>
+</section>
+<div class="card" style="padding:24px;">
+<h2 id="statusText"></h2>
+<p id="pointsText"></p>
+<p>مجموع نقاطك الآن: <strong id="scoreText"></strong></p>
+<div id="scoreImage" style="margin:1rem auto;"></div>
+<div style="margin-top:1rem;">
+  <button id="nextBtn" class="btn btn-primary">التالي ⏭️</button>
+  <button id="resultBtn" class="btn btn-success">عرض النتيجة النهائية 🏁</button>
+</div>
+</div>
+</main>
+<script>
+const isCorrect=localStorage.getItem('mcq_isCorrect')==='1';
+let score=parseInt(localStorage.getItem('mcq_score')||'0',10);
+const idx=parseInt(localStorage.getItem('mcq_qindex')||'0',10);
+const total=5;
+document.getElementById('statusText').textContent=isCorrect?'إجابة صحيحة 🎉':'إجابة خاطئة ❌';
+document.getElementById('statusText').style.color=isCorrect?'green':'red';
+document.getElementById('pointsText').textContent=isCorrect?'+1 نقطة':'+0 نقطة';
+document.getElementById('scoreText').textContent=score;
+let img='10.jpeg';
+
+if(score<1)img='10.jpeg'; else if(score<2)img='5.jpeg'; else if(score<3)img='6.jpeg'; else if(score<4)img='7.jpeg'; else if(score<5)img='9.jpeg'; else img='8.jpeg';
+
+document.getElementById('scoreImage').innerHTML='<img src="../assets/'+img+'" style="max-width:50%;border-radius:0.5rem;">';
+if(idx>=total){document.getElementById('nextBtn').style.display='none';}else{document.getElementById('resultBtn').style.display='none';}
+document.getElementById('nextBtn').addEventListener('click',()=>window.location.href='question_1.html');
+document.getElementById('resultBtn').addEventListener('click',()=>window.location.href='result_1.html');
+</script>
+</body></html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>🎯 النتيجة النهائية - GameMCQ</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="header">
+  <div class="container header-main">
+    <div class="header-content">
+      <div class="logo"><img src="assets/LogoBgRemove.png" alt="logo" style="height:48px;margin-right:8px;"><div class="logo-text">GameMCQ</div></div>
+      <nav class="nav">
+        <a class="nav-link" href="select-team.html">ابدأ</a>
+        <a class="nav-link" href="leaderboard.html">النتائج</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main class="container section" style="text-align:center;">
+<div class="card service-card text-center" style="padding:24px;">
+<p class="mt-2">الفريق: <span class="text-success" id="teamName" style="font-weight:800;"></span></p>
+<h2 class="mt-2">🎯 النتيجة النهائية</h2>
+<div class="card-content">
+<ul class="feature-list" id="resultText"></ul>
+<button id="retryBtn" class="btn btn-primary" style="background-color:#7a5025;color:white;">إعادة اللعب 🔁</button>
+<button id="leaderboardBtn" class="btn btn-success">عرض ترتيب الفرق 🏆</button>
+</div>
+</div>
+</main>
+
+<script>
+const BIN_ID = "690095e3ae596e708f32a329";
+const MASTER_KEY = "$2a$10$X7gra02wRE9BA7pCDF2tiuRL3YifJn2E6PMujgdNHtYYeqxcSauyu";
+const team = localStorage.getItem('mcq_team') || 'الفريق';
+const score = parseInt(localStorage.getItem('mcq_score')||'0',10);
+const total = 5;
+document.getElementById('teamName').textContent = team;
+const res = document.getElementById('resultText');
+if(score === total){
+  res.innerHTML = '<h2 style="color:green;">🎉 ممتاز! أجبت جميع الأسئلة بشكل صحيح!</h2>';
+} else if(score > 0){
+  res.innerHTML = '<h2 style="color:orange;">👏 حصلت على '+score+' من '+total+' نقطة</h2>';
+} else {
+  res.innerHTML = '<h2 style="color:red;">❌ لم تجب أي إجابة صحيحة. حاول مرة أخرى!</h2>';
+}
+
+document.getElementById('retryBtn').addEventListener('click',()=>{
+  localStorage.setItem('mcq_qindex','0');
+  localStorage.setItem('mcq_score','0');
+  window.location.href='question.html';
+});
+
+document.getElementById('leaderboardBtn').addEventListener('click',()=>{
+  const url = 'https://api.jsonbin.io/v3/b/'+BIN_ID;
+  fetch(url+'/latest',{headers:{'X-Master-Key':MASTER_KEY,'Content-Type':'application/json'}})
+    .then(r=>r.json())
+    .then(j=>{
+      let arr = Array.isArray(j.record)?j.record:[];
+      arr.push({team:team,score:score,date:new Date().toISOString()});
+      fetch(url,{method:'PUT',headers:{'X-Master-Key':MASTER_KEY,'Content-Type':'application/json'},body:JSON.stringify(arr)})
+        .then(rr=>{ if(rr.ok) window.location.href='leaderboard.html'; else alert('خطأ في حفظ النتيجة'); })
+        .catch(()=>alert('خطأ في حفظ النتيجة'));
+    })
+    .catch(()=>{ alert('خطأ في الوصول إلى قاعدة البيانات'); });
+});
+</script>
+</body>
+</html>

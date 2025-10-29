@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>الأسئلة - GameMCQ</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header class="header">
+  <div class="container header-main">
+    <div class="header-content">
+      <div class="logo"><img src="../assets/LogoBgRemove.png" alt="logo" style="height:48px;margin-right:8px;"><div class="logo-text">GameMCQ</div></div>
+      <nav class="nav">
+        <a class="nav-link" href="select-team_1.html">ابدأ</a>
+        <a class="nav-link" href="leaderboard.html">النتائج</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main class="container section">
+<section class="section-header">
+<h1 class="section-title">الأسئلة</h1>
+<p class="section-description">أجب عن الأسئلة لاختبار معرفتك.</p>
+<p class="section-description" style="color: black; font-weight: 800;">Qr_11 — أسئلة 🎶 ليتورجية</p>
+
+</section>
+<div id="quizContainer" style="max-width:900px;margin:0 auto;">
+  <div id="questionCard" class="card" style="padding:24px;">
+    <div id="questionText" class="card-title"></div>
+    <div id="options" style="margin-top:16px;display:flex;flex-direction:column;gap:10px;"></div>
+  </div>
+</div>
+</main>
+<script>
+const questions = [
+  {
+    "id": 1,
+    "text": "متى يُقال لحن أمونوجينيس؟",
+    "options": ["أحد الشعانين", "الجمعة العظيمة", "الغطاس"],
+    "answer": 1
+  },
+  {
+    "id": 2,
+    "text": "متى يُقال لحن أي بارثينوس؟",
+    "options": ["القيامة", "عيد الميلاد", "الخماسين"],
+    "answer": 1
+  },
+  {
+    "id": 3,
+    "text": "متى يُقال لحن كاطا ني خوروس؟",
+    "options": ["أسبوع الآلام", "الخماسين", "الصوم الكبير"],
+    "answer": 1
+  },
+  {
+    "id": 4,
+    "text": "متى يُقال لحن بي إبنفما؟",
+    "options": ["الغطاس", "عيد حلول الروح القدس", "عيد الميلاد"],
+    "answer": 1
+  },
+  {
+    "id": 5,
+    "text": "متى يُقال لحن أسومين؟",
+    "options": ["الخماسين", "صوم الرسل", "الصوم الكبير"],
+    "answer": 1
+  }
+];
+
+
+let index = parseInt(localStorage.getItem('mcq_qindex')||'0',10);
+let score = parseInt(localStorage.getItem('mcq_score')||'0',10);
+function renderQuestion(){
+  const q = questions[index];
+  if(!q){window.location.href='result_1.html';return;}
+  document.getElementById('questionText').textContent=(index+1)+'. '+q.text;
+  const optionsDiv=document.getElementById('options');
+  optionsDiv.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='btn btn-ghost';
+    btn.textContent=opt;
+    btn.onclick=()=>{
+      const correct=(i===q.answer);
+      localStorage.setItem('mcq_isCorrect',correct?'1':'0');
+      if(correct)score++;
+      localStorage.setItem('mcq_score',score);
+      localStorage.setItem('mcq_qindex',index+1);
+      window.location.href='feedback_1.html';
+    };
+    optionsDiv.appendChild(btn);
+  });
+}
+renderQuestion();
+</script>
+</body></html>

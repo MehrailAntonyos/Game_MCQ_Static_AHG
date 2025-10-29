@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>اختر الفريق - GameMCQ</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:2rem;}
+.team-card{padding:2rem;text-align:center;border-radius:1rem;font-size:1.25rem;cursor:pointer;transition:transform .2s,box-shadow .2s;}
+.team-card:hover{transform:translateY(-4px);box-shadow:0 4px 8px rgba(0,0,0,.1);}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="container header-main">
+    <div class="header-content">
+      <div class="logo"><img src="assets/LogoBgRemove.png" alt="logo" style="height:48px;margin-right:8px;"><div class="logo-text">GameMCQ</div></div>
+      <nav class="nav">
+        <a class="nav-link" href="select-team.html">ابدأ</a>
+        <a class="nav-link" href="leaderboard.html">النتائج</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main class="container section">
+  <section class="section-header">
+    <h1 class="section-title">اختر الفريق</h1>
+    <p class="section-description">اختر أحد الفرق الأربعة لبدء المسابقة.</p>
+  </section>
+  <div class="team-grid">
+    <div class="team-card" data-team="الفريق ١" style="background:#c6f6d5;">🟢 الفريق ١</div>
+    <div class="team-card" data-team="الفريق ٢" style="background:#bee3f8;">🔵 الفريق ٢</div>
+    <div class="team-card" data-team="الفريق ٣" style="background:#fefcbf;">🟡 الفريق ٣</div>
+    <div class="team-card" data-team="الفريق ٤" style="background:#fed7d7;">🔴 الفريق ٤</div>
+  </div>
+</main>
+<script>
+document.querySelectorAll('.team-card').forEach(card=>{
+  card.addEventListener('click',()=>{
+    localStorage.setItem('mcq_team',card.dataset.team);
+    localStorage.setItem('mcq_score','0');
+    localStorage.setItem('mcq_qindex','0');
+    window.location.href='question.html';
+  });
+});
+</script>
+</body></html>

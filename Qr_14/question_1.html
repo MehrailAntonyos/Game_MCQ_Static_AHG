@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>الأسئلة - GameMCQ</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header class="header">
+  <div class="container header-main">
+    <div class="header-content">
+      <div class="logo"><img src="../assets/LogoBgRemove.png" alt="logo" style="height:48px;margin-right:8px;"><div class="logo-text">GameMCQ</div></div>
+      <nav class="nav">
+        <a class="nav-link" href="select-team_1.html">ابدأ</a>
+        <a class="nav-link" href="leaderboard.html">النتائج</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main class="container section">
+<section class="section-header">
+<h1 class="section-title">الأسئلة</h1>
+<p class="section-description">أجب عن الأسئلة لاختبار معرفتك.</p>
+<p class="section-description" style="color: black; font-weight: 800;">Qr_14 — أسئلة ⛪ عقائدية وتاريخية كنسية</p>
+
+</section>
+<div id="quizContainer" style="max-width:900px;margin:0 auto;">
+  <div id="questionCard" class="card" style="padding:24px;">
+    <div id="questionText" class="card-title"></div>
+    <div id="options" style="margin-top:16px;display:flex;flex-direction:column;gap:10px;"></div>
+  </div>
+</div>
+</main>
+<script>
+const questions = [
+  {
+    "id": 1,
+    "text": "ما المقصود بعقيدة التجسد الإلهي في الإيمان المسيحي؟",
+    "options": [
+      "أن المسيح خُلق مثل باقي البشر",
+      "أن الله الكلمة تجسد وصار إنسانًا في شخص المسيح",
+      "أن الله ظهر في شكل ملاك"
+    ],
+    "answer": 1
+  },
+  {
+    "id": 2,
+    "text": "من هو البابا الذي جلس على كرسي مارمرقس أثناء الاحتلال العربي لمصر؟",
+    "options": [
+      "البابا بطرس خاتم الشهداء",
+      "البابا كيرلس السادس",
+      "البابا بنيامين الأول"
+    ],
+    "answer": 2
+  },
+  {
+    "id": 3,
+    "text": "من هو رئيس مجمع نيقية؟",
+    "options": [
+      "البابا أثناسيوس",
+      "القديس كيرلس",
+      "البابا ألكساندروس"
+    ],
+    "answer": 2
+  },
+  {
+    "id": 4,
+    "text": "من هو رئيس مجمع أفسس؟",
+    "options": [
+      "البابا أثناسيوس",
+      "البابا ديوسقورس",
+      "القديس كيرلس الكبير"
+    ],
+    "answer": 2
+  },
+  {
+    "id": 5,
+    "text": "من هو رئيس مجمع القسطنطينية؟",
+    "options": [
+      "يوحنا ذهبي الفم",
+      "القديس غريغوريوس الناطق بالإلهيات",
+      "كيرلس الكبير"
+    ],
+    "answer": 1
+  }
+];
+
+
+let index = parseInt(localStorage.getItem('mcq_qindex')||'0',10);
+let score = parseInt(localStorage.getItem('mcq_score')||'0',10);
+function renderQuestion(){
+  const q = questions[index];
+  if(!q){window.location.href='result_1.html';return;}
+  document.getElementById('questionText').textContent=(index+1)+'. '+q.text;
+  const optionsDiv=document.getElementById('options');
+  optionsDiv.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='btn btn-ghost';
+    btn.textContent=opt;
+    btn.onclick=()=>{
+      const correct=(i===q.answer);
+      localStorage.setItem('mcq_isCorrect',correct?'1':'0');
+      if(correct)score++;
+      localStorage.setItem('mcq_score',score);
+      localStorage.setItem('mcq_qindex',index+1);
+      window.location.href='feedback_1.html';
+    };
+    optionsDiv.appendChild(btn);
+  });
+}
+renderQuestion();
+</script>
+</body></html>

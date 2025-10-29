@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>الأسئلة - GameMCQ</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="header">
+  <div class="container header-main">
+    <div class="header-content">
+      <div class="logo"><img src="assets/LogoBgRemove.png" alt="logo" style="height:48px;margin-right:8px;"><div class="logo-text">GameMCQ</div></div>
+      <nav class="nav">
+        <a class="nav-link" href="select-team.html">ابدأ</a>
+        <a class="nav-link" href="leaderboard.html">النتائج</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main class="container section">
+<section class="section-header">
+<h1 class="section-title">الأسئلة</h1>
+<p class="section-description">أجب عن الأسئلة لاختبار معرفتك.</p>
+</section>
+<div id="quizContainer" style="max-width:900px;margin:0 auto;">
+  <div id="questionCard" class="card" style="padding:24px;">
+    <div id="questionText" class="card-title"></div>
+    <div id="options" style="margin-top:16px;display:flex;flex-direction:column;gap:10px;"></div>
+  </div>
+</div>
+</main>
+<script>
+const questions = [{"id": 1, "text": "أين ذُكر ديماس تلميذ بولس الرسول لأول مرة؟", "options": ["رسالة كولوسي", "رسالة رومية", "رسالة تيموثاوس الثانية"], "answer": 0}, {"id": 2, "text": "أين ذُكر مثل الوزنات؟", "options": ["متى ٢٥", "مرقس ١٢", "لوقا ١٥"], "answer": 0}, {"id": 3, "text": "ما هو أصغر أسفار الكتاب المقدس؟", "options": ["عوبيديا", "فليمون", "حنّة"], "answer": 0}, {"id": 4, "text": "من هو قائد أول أفواج عودة سبي بابل؟", "options": ["زربابل", "نحميا", "عزرا"], "answer": 0}, {"id": 5, "text": "من هو الملك الذي في عهده انقسمت مملكة بني إسرائيل؟", "options": ["رحبعام بن سليمان", "يربعام", "آخاب"], "answer": 0}];
+let index = parseInt(localStorage.getItem('mcq_qindex')||'0',10);
+let score = parseInt(localStorage.getItem('mcq_score')||'0',10);
+function renderQuestion(){
+  const q = questions[index];
+  if(!q){window.location.href='result.html';return;}
+  document.getElementById('questionText').textContent=(index+1)+'. '+q.text;
+  const optionsDiv=document.getElementById('options');
+  optionsDiv.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='btn btn-ghost';
+    btn.textContent=opt;
+    btn.onclick=()=>{
+      const correct=(i===q.answer);
+      localStorage.setItem('mcq_isCorrect',correct?'1':'0');
+      if(correct)score++;
+      localStorage.setItem('mcq_score',score);
+      localStorage.setItem('mcq_qindex',index+1);
+      window.location.href='feedback.html';
+    };
+    optionsDiv.appendChild(btn);
+  });
+}
+renderQuestion();
+</script>
+</body></html>

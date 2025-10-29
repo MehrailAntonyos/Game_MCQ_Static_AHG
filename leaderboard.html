@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>🏆 لوحة ترتيب الفرق - GameMCQ</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+table{width:100%;border-collapse:collapse;margin-top:1rem;}
+th,td{border:1px solid #ccc;padding:8px;text-align:center;}
+th{background-color:#f8f8f8;}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="container header-main">
+    <div class="header-content">
+      <div class="logo"><img src="assets/LogoBgRemove.png" alt="logo" style="height:48px;margin-right:8px;"><div class="logo-text">GameMCQ</div></div>
+      <nav class="nav">
+        <a class="nav-link" href="select-team.html">ابدأ</a>
+        <a class="nav-link" href="leaderboard.html">النتائج</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<main class="container section" style="text-align:center;">
+<div class="card service-card text-center" style="padding:24px;">
+<h2 class="mt-2">🏆 لوحة ترتيب الفرق</h2>
+<div class="card-content">
+<table id="leaderboardTable">
+<thead><tr><th>الفريق</th><th>النقاط</th><th>تاريخ</th></tr></thead>
+<tbody id="leaderboardBody"></tbody>
+</table>
+<div style="margin-top:1rem;">
+<button id="newGameBtn" class="btn btn-primary" style="background-color:#7a5025;color:white;">ابدأ لعبة جديدة 🎮</button>
+<button id="resetBtn" class="btn btn-danger">إعادة تعيين الترتيب 🔁</button>
+</div>
+</div>
+</div>
+</main>
+<script>
+const BIN_ID = "690095e3ae596e708f32a329";
+const MASTER_KEY = "$2a$10$X7gra02wRE9BA7pCDF2tiuRL3YifJn2E6PMujgdNHtYYeqxcSauyu";
+function loadBoard(){
+  const url = 'https://api.jsonbin.io/v3/b/'+BIN_ID+'/latest';
+  fetch(url,{headers:{'X-Master-Key':MASTER_KEY,'Content-Type':'application/json'}})
+    .then(r=>r.json())
+    .then(j=>{
+      const arr = Array.isArray(j.record)?j.record:[];
+      const body = document.getElementById('leaderboardBody');
+      if(arr.length===0){ body.innerHTML = '<tr><td colspan="3">لا توجد نتائج بعد</td></tr>'; return; }
+      body.innerHTML = arr.map(e=>'<tr><td>'+e.team+'</td><td>'+e.score+'</td><td>'+ (e.date? new Date(e.date).toLocaleString() : '') +'</td></tr>').join('');
+    })
+    .catch(()=>{ document.getElementById('leaderboardBody').innerHTML = '<tr><td colspan="3">خطأ في التحميل</td></tr>'; });
+}
+document.getElementById('newGameBtn').addEventListener('click',()=>window.location.href='select-team.html');
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  if(confirm('هل أنت متأكد من إعادة تعيين الترتيب؟')){
+    const url = 'https://api.jsonbin.io/v3/b/'+BIN_ID;
+    fetch(url,{method:'PUT',headers:{'X-Master-Key':MASTER_KEY,'Content-Type':'application/json'},body:JSON.stringify([])})
+      .then(r=>{ if(r.ok) loadBoard(); else alert('فشل في إعادة التعيين'); })
+      .catch(()=>alert('فشل في إعادة التعيين'));
+  }
+});
+loadBoard();
+</script>
+</body>
+</html>
